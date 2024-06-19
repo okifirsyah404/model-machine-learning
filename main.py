@@ -160,7 +160,7 @@ async def predict_image(file: UploadFile = File(...), purchase_price: float = Fo
         
         # Predict with model 2
         try:
-            predicted_price = model2.predict(data_to_send) / 100
+            predicted_price = model2.predict(data_to_send)
             predicted_price_float = float(predicted_price[0][0])  # Convert to float for JSON serialization
 
             # Print raw predicted price

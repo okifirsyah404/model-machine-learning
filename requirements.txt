@@ -1,9 +1,10 @@
 
 fastapi
-fastapi
+opencv-python
 uvicorn
 pydantic
 requests
 ultralytics
 tensorflow
+
 

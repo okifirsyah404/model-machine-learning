@@ -1,14 +1,15 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form
-from fastapi.responses import JSONResponse
-from starlette.middleware.base import BaseHTTPMiddleware
-from PIL import Image
 import io
-import requests
-import numpy as np
-from ultralytics import YOLO
-import tensorflow as tf
-from tensorflow.keras.losses import MeanSquaredError
 import math
+
+import numpy as np
+import requests
+import tensorflow as tf
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi.responses import JSONResponse
+from PIL import Image
+from starlette.middleware.base import BaseHTTPMiddleware
+from tensorflow.keras.losses import MeanSquaredError
+from ultralytics import YOLO
 
 app = FastAPI()
 
@@ -23,7 +24,7 @@ app.add_middleware(RequestLoggingMiddleware)
 
 # URLs to the models
 MODEL_URL = 'https://storage.googleapis.com/bucket-storage-request/best.pt'
-MODEL_2_URL = 'https://storage.googleapis.com/bucket-storage-request/model2.h5'
+MODEL_2_URL = 'https://storage.googleapis.com/bucket-storage-request/model2_v2.h5'
 
 # Function to download a model
 def download_model(url, destination):
@@ -33,7 +34,7 @@ def download_model(url, destination):
 
 # Download and load the models at startup
 model1_path = 'best.pt'
-model2_path = 'model2.h5'
+model2_path = 'model2_v2.h5'
 
 download_model(MODEL_URL, model1_path)
 download_model(MODEL_2_URL, model2_path)
@@ -155,7 +156,7 @@ async def predict_image(file: UploadFile = File(...), purchase_price: float = Fo
 
         # Data to be sent to model 2
         # Adding purchase_price as the first feature
-        data_to_send = np.array([[purchase_price, resultDict['Rasio_Ripped'], resultDict['Rasio_Wornout']]])
+        data_to_send = np.array([[ resultDict['Rasio_Ripped'], resultDict['Rasio_Wornout'],purchase_price,]])
         
         # Predict with model 2
         try:

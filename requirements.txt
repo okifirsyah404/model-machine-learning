@@ -1,0 +1,9 @@
+
+fastapi
+fastapi
+uvicorn
+pydantic
+requests
+ultralytics
+tensorflow
+
